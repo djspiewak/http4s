@@ -8,6 +8,7 @@ import org.http4s.scalaxml._
 import scodec.bits.ByteVector
 
 import scala.xml.Elem
+import scala.concurrent.duration._
 import scalaz.{Reducer, Monoid}
 import scalaz.concurrent.Task
 import scalaz.stream.Process
@@ -16,6 +17,8 @@ import scalaz.stream.Process._
 /** These are routes that we tend to use for testing purposes
   * and will likely get folded into unit tests later in life */
 object ScienceExperiments {
+
+  private implicit def timedES = scalaz.concurrent.Strategy.DefaultTimeoutScheduler
 
   val flatBigString = (0 until 1000).map{ i => s"This is string number $i" }.foldLeft(""){_ + _}
 
@@ -91,6 +94,14 @@ object ScienceExperiments {
     case req @ GET -> Root / "hanging-body" =>
       Ok(Process(Task.now(ByteVector(Seq(' '.toByte))), Task.async[ByteVector] { cb => /* hang */}).eval)
         .withHeaders(`Transfer-Encoding`(TransferCoding.chunked))
+
+    case req @ GET -> Root / "broken-body" =>
+      Ok(Process(Task{"Hello "}) ++ Process(Task{sys.error("Boom!")}) ++ Process(Task{"world!"}))
+
+    case req @ GET -> Root / "slow-body" =>
+      val resp = "Hello world!".map(_.toString())
+      val body = Process.awakeEvery(2.seconds).zipWith(Process.emitAll(resp))((_, c) => c)
+      Ok(body).withHeaders(`Transfer-Encoding`(TransferCoding.chunked))
 
     case req @ POST -> Root / "ill-advised-echo" =>
       // Reads concurrently from the input.  Don't do this at home.

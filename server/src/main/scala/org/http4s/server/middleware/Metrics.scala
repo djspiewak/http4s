@@ -7,9 +7,10 @@ import com.codahale.metrics._
 import org.http4s.{Method, Response, Request}
 import org.http4s.server.{Service, HttpService}
 
+import scalaz.stream.Cause.End
 import scalaz.{\/, -\/, \/-}
 import scalaz.concurrent.Task
-import scalaz.stream.Process.halt
+import scalaz.stream.Process.{Halt, halt}
 
 object Metrics {
 
@@ -17,8 +18,10 @@ object Metrics {
 
     val active_requests = m.counter(name + ".active-requests")
 
+    val abnormal_termination = m.timer(name + ".abnormal-termination")
     val service_failure = m.timer(name + ".service-error")
     val headers_times = m.timer(name + ".headers-times")
+
 
     val resp1xx = m.timer(name + ".1xx-responses")
     val resp2xx = m.timer(name + ".2xx-responses")
@@ -70,7 +73,8 @@ object Metrics {
         case \/-(Some(r)) =>
           headers_times.update(System.nanoTime() - start, TimeUnit.NANOSECONDS)
           val code = r.status.code
-          val body = r.body.onComplete {
+
+          val body = r.body.onHalt { cause =>
             val elapsed = System.nanoTime() - start
 
             generalMetrics(method, elapsed)
@@ -80,7 +84,13 @@ object Metrics {
             else if (code < 400) resp3xx.update(elapsed, TimeUnit.NANOSECONDS)
             else if (code < 500) resp4xx.update(elapsed, TimeUnit.NANOSECONDS)
             else resp5xx.update(elapsed, TimeUnit.NANOSECONDS)
-            halt
+
+            cause match {
+              case End => halt
+              case _   =>
+                abnormal_termination.update(elapsed, TimeUnit.NANOSECONDS)
+                Halt(cause)
+            }
           }
 
           \/-(Some(r.copy(body = body)))
