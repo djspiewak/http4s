@@ -65,7 +65,7 @@ homepage in ThisBuild := Some(url("https://github.com/http4s/http4s"))
 startYear in ThisBuild := Some(2013)
 
 licenses in ThisBuild := Seq(
-  "Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
+  "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
 )
 
 scmInfo in ThisBuild := {
