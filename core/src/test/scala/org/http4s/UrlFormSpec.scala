@@ -3,7 +3,7 @@ package org.http4s
 import org.http4s.util.UrlCodingUtils
 import org.scalacheck.{Arbitrary, Gen}
 import org.specs2.ScalaCheck
-import org.specs2.matcher.Parameters
+import org.specs2.scalacheck.Parameters
 
 import scala.collection.immutable.BitSet
 import scalaz.\/-
@@ -11,7 +11,7 @@ import scalaz.\/-
 
 class UrlFormSpec extends Http4sSpec with ScalaCheck {
   // These tests are slow.  Let's lower the bar.
-  implicit val p = Parameters(maxSize = 40)
+  implicit val params = Parameters(maxSize = 40)
 
 //  // TODO: arbitrary charsets would be nice
 //  /*

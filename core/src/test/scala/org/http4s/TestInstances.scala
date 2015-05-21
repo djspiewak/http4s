@@ -11,7 +11,6 @@ import org.scalacheck.{Arbitrary, Gen}
 import scala.collection.JavaConverters._
 import scala.collection.immutable.BitSet
 import scalaz.NonEmptyList
-import scalaz.scalacheck.ScalazArbitrary._
 
 trait TestInstances {
   implicit class ParseResultSyntax[A](self: ParseResult[A]) {
@@ -96,6 +95,10 @@ trait TestInstances {
   implicit val arbitraryCharsetSplatRange: Arbitrary[CharsetRange.`*`] =
     Arbitrary { arbitrary[QValue].map(CharsetRange.`*`.withQValue(_)) }
 
+
+  implicit def arbitraryNEL[A: Arbitrary]: Arbitrary[NonEmptyList[A]] =
+    Arbitrary { arbitrary[List[A]] filter { !_.isEmpty } map { as => NonEmptyList.nels(as.head, as.tail: _*) } }
+
   implicit val arbitraryAcceptCharset: Arbitrary[`Accept-Charset`] =
     Arbitrary { arbitrary[NonEmptyList[CharsetRange.`*`]].map(`Accept-Charset`(_)) }
 
@@ -105,7 +108,7 @@ trait TestInstances {
     arbitrary[Map[String, Seq[String]]].map(UrlForm.apply)
       .suchThat(!_.toString.contains('\ufffe'))
   }
- 
+
   implicit val bitSetArb: Arbitrary[BitSet] = Arbitrary(
     Arbitrary.arbitrary[Set[Char]].map(_.map(_.toInt)).map(set => BitSet(set.toSeq: _*))
   )

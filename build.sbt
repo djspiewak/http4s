@@ -128,13 +128,13 @@ resolvers in ThisBuild ++= Seq(
   Resolver.typesafeRepo("releases"),
   Resolver.sonatypeRepo("snapshots"),
   "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
-  "rossabaker Bintray Repo" at "http://dl.bintray.com/rossabaker/maven"
+  "rossabaker Bintray Repo" at "http://dl.bintray.com/rossabaker/maven",
+  "bintray-djspiewak-maven" at "http://dl.bintray.com/djspiewak/maven"
 )
 
 /* These test dependencies applied to all projects under the http4s umbrella */
 libraryDependencies in ThisBuild ++= Seq(
   scalameter % "test",
-  scalazScalacheckBinding % "test",
   scalazSpecs2 % "test"
 )
 

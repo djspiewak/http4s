@@ -10,7 +10,8 @@ import org.eclipse.jetty.servlet.{ServletHolder, ServletContextHandler}
 import org.http4s.Uri.{Authority, RegName}
 import org.http4s.client.testroutes.GetRoutes
 
-import org.specs2.specification.{ Fragment, Step }
+import org.specs2.specification.dsl.FragmentsDsl
+import org.specs2.specification.core.Fragment
 
 import scala.concurrent.duration._
 import scalaz.concurrent.Task
@@ -18,7 +19,7 @@ import scalaz.stream.Process
 
 
 abstract class ClientRouteTestBattery(name: String, client: Client)
-  extends Http4sSpec with GetRoutes {
+  extends Http4sSpec with GetRoutes with FragmentsDsl {
 
   protected def timeout: Duration = 10.seconds
 
@@ -26,9 +27,10 @@ abstract class ClientRouteTestBattery(name: String, client: Client)
 
   // Start the tests
   name should {
-    Step(startup()) ^
-    runAllTests()   ^
-    Step(cleanup())
+    link(
+      step(startup()) ^
+      runAllTests()   ^
+      step(cleanup()))
   }
 
   def startup() = {}

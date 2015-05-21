@@ -58,7 +58,7 @@ object Http4sBuild extends Build {
   lazy val http4sWebsocket     = "org.http4s"               %% "http4s-websocket"        % "0.1.1"
   lazy val javaxServletApi     = "javax.servlet"             % "javax.servlet-api"       % "3.1.0"
   lazy val jawnParser          = "org.spire-math"           %% "jawn-parser"             % "0.7.4"
-  lazy val jawnStreamz         = "org.http4s"               %% "jawn-streamz"            % "0.3.1"
+  lazy val jawnStreamz         = "org.http4s"               %% "jawn-streamz"            % "006e07e61fc31b0631750b6234bc6176ab58d520"
   lazy val jettyServer         = "org.eclipse.jetty"         % "jetty-server"            % "9.2.10.v20150310"
   lazy val jettyServlet        = "org.eclipse.jetty"         % "jetty-servlet"           % jettyServer.revision
   lazy val json4sCore          = "org.json4s"               %% "json4s-core"             % "3.2.11"
@@ -77,9 +77,8 @@ object Http4sBuild extends Build {
   def scalaReflect(sv: String) = "org.scala-lang"            % "scala-reflect"           % sv
   lazy val scalameter          = "com.storm-enroute"        %% "scalameter"              % "0.6"
   lazy val scalaXml            = "org.scala-lang.modules"   %% "scala-xml"               % "1.0.3"
-  lazy val scalazScalacheckBinding = "org.scalaz"           %% "scalaz-scalacheck-binding" % "7.1.1"
-  lazy val scalazSpecs2        = "org.typelevel"            %% "scalaz-specs2"           % "0.3.0"
-  lazy val scalazStream        = "org.scalaz.stream"        %% "scalaz-stream"           % "0.7a"
+  lazy val scalazSpecs2        = "org.typelevel"            %% "scalaz-specs2"           % "658c8be6d241deff390d196103f4063295bfecf1"
+  lazy val scalazStream        = "org.scalaz.stream"        %% "scalaz-stream"           % "0b8034baed5edf0e71b378174f476da1c95121f8"
   lazy val scodecBits          = "org.scodec"               %% "scodec-bits"             % "1.0.6"
   lazy val tomcatCatalina      = "org.apache.tomcat"         % "tomcat-catalina"         % "8.0.21"
   lazy val tomcatCoyote        = "org.apache.tomcat"         % "tomcat-coyote"           % tomcatCatalina.revision

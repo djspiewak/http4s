@@ -2,7 +2,7 @@ package org.http4s
 
 import java.util.Locale
 
-import scalaz.scalacheck.ScalazProperties
+// import scalaz.scalacheck.ScalazProperties
 
 import org.http4s.parser.Rfc2616BasicRules
 import org.scalacheck.Prop.forAll
@@ -28,7 +28,7 @@ class MethodSpec extends Http4sSpec {
     }}
   }
 
-  checkAll(ScalazProperties.equal.laws[Method])
+  // checkAll(ScalazProperties.equal.laws[Method])
 
   "methods are equal by name" in {
     prop { m: Method => Method.fromString(m.name) must beRightDisjunction(m) }

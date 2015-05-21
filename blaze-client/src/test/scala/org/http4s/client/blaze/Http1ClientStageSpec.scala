@@ -10,6 +10,7 @@ import org.http4s.blaze.{SlowTestHead, SeqTestHead}
 import org.http4s.blaze.pipeline.LeafBuilder
 import org.http4s.util.CaseInsensitiveString._
 
+import org.specs2.concurrent.ExecutionEnv
 import org.specs2.mutable.Specification
 import org.specs2.time.NoTimeConversions
 import scodec.bits.ByteVector
@@ -20,7 +21,7 @@ import scala.concurrent.duration._
 import scalaz.\/-
 
 // TODO: this needs more tests
-class Http1ClientStageSpec extends Specification with NoTimeConversions {
+class Http1ClientStageSpec(implicit ee: ExecutionEnv) extends Specification with NoTimeConversions {
 
   // Common throw away response
   val resp = "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\ndone"

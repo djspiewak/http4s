@@ -11,6 +11,8 @@ import org.http4s.blaze._
 import org.http4s.blaze.pipeline.{Command => Cmd}
 import org.http4s.util.CaseInsensitiveString._
 import org.http4s.{headers => H}
+import org.specs2.concurrent.ExecutionEnv
+import org.specs2.execute.Result
 import org.specs2.mutable.Specification
 import org.specs2.time.NoTimeConversions
 
@@ -23,7 +25,7 @@ import scalaz.stream.Process
 
 import scodec.bits.ByteVector
 
-class Http1ServerStageSpec extends Specification with NoTimeConversions {
+class Http1ServerStageSpec(implicit ee: ExecutionEnv) extends Specification with NoTimeConversions {
   def makeString(b: ByteBuffer): String = {
     val p = b.position()
     val a = new Array[Byte](b.remaining())
@@ -50,10 +52,12 @@ class Http1ServerStageSpec extends Specification with NoTimeConversions {
   }
 
   "Http1ServerStage: Common responses" should {
-    ServerTestRoutes.testRequestResults.zipWithIndex.foreach { case ((req, (status,headers,resp)), i) =>
-      s"Run request $i Run request: --------\n${req.split("\r\n\r\n")(0)}\n" in {
-        val result = runRequest(Seq(req), ServerTestRoutes())
-        result.map(parseAndDropDate) must be_== ((status, headers, resp)).await(0, FiniteDuration(5, "seconds"))
+    Result unit {
+      ServerTestRoutes.testRequestResults.zipWithIndex.foreach { case ((req, (status,headers,resp)), i) =>
+        s"Run request $i Run request: --------\n${req.split("\r\n\r\n")(0)}\n" in {
+          val result = runRequest(Seq(req), ServerTestRoutes())
+          result.map(parseAndDropDate) must be_== ((status, headers, resp)).await(0, FiniteDuration(5, "seconds"))
+        }
       }
     }
   }

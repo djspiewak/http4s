@@ -7,6 +7,7 @@ import org.http4s.Headers
 import org.http4s.blaze.TestHead
 import org.http4s.blaze.pipeline.{LeafBuilder, TailStage}
 import org.http4s.util.StringWriter
+import org.specs2.concurrent.ExecutionEnv
 import org.specs2.mutable.Specification
 import scodec.bits.ByteVector
 
@@ -19,7 +20,7 @@ import scalaz.stream.{Cause, Process}
 
 
 
-class ProcessWriterSpec extends Specification {
+class ProcessWriterSpec(implicit eenv: ExecutionEnv) extends Specification {
 
   def writeProcess(p: Process[Task, ByteVector])(builder: TailStage[ByteBuffer] => ProcessWriter): String = {
     val tail = new TailStage[ByteBuffer] {

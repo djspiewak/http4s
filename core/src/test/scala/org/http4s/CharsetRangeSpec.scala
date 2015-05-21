@@ -1,6 +1,6 @@
 package org.http4s
 
-import scalaz.scalacheck.ScalazProperties
+// import scalaz.scalacheck.ScalazProperties
 
 import org.http4s.CharsetRange.`*`
 import org.scalacheck.{Gen, Prop}
@@ -39,7 +39,7 @@ class CharsetRangeSpec extends Http4sSpec {
     }
   }
 
-  checkAll(ScalazProperties.order.laws[CharsetRange])
+  // checkAll(ScalazProperties.order.laws[CharsetRange])
 
   "sort by descending q-values" in {
     prop { (x: CharsetRange, y: CharsetRange) =>
