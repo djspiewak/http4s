@@ -144,14 +144,14 @@ ivyLoggingLevel in (ThisBuild, update) := UpdateLogging.DownloadOnly
 
 publishMavenStyle in ThisBuild := true
 
-publishTo in ThisBuild <<= version(v => Some(nexusRepoFor(v)))
+// publishTo in ThisBuild <<= version(v => Some(nexusRepoFor(v)))
 
 publishArtifact in (ThisBuild, Test) := false
 
 // Don't publish root pom.  It's not needed.
 packagedArtifacts in file(".") := Map.empty
 
-credentials ++= travisCredentials.toSeq
+// credentials ++= travisCredentials.toSeq
 
 unidocSettings
 

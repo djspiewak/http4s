@@ -23,3 +23,5 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.0.4")
 addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.1.12")
 
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.0")
+
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")

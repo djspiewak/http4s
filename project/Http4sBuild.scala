@@ -16,10 +16,11 @@ object Http4sBuild extends Build {
   }
 
   def extractApiVersion(version: String) = {
-    val VersionExtractor = """(\d+)\.(\d+)\..*""".r
-    version match {
+    // val VersionExtractor = """(\d+)\.(\d+)\..*""".r
+    /*version match {
       case VersionExtractor(major, minor) => (major.toInt, minor.toInt)
-    }
+    }*/
+    (0, 8)
   }
 
   lazy val travisCredentials = (envOrNone("SONATYPE_USER"), envOrNone("SONATYPE_PASS")) match {
